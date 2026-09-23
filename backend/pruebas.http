@@ -1,0 +1,15 @@
+POST http://localhost:8080/api/empleados
+Content-Type: application/json
+
+{
+  "rut": "98765432-1",
+  "nombre": "Laura Gómez",
+  "fechaNacimiento": "1998-08-20",
+  "direccion": "Armenia",
+  "telefono": "3101234567",
+  "correo": "laura@example.com",
+  "cargo": "Contadora",
+  "jornada": "Completa",
+  "sueldoBruto": 3000000,
+  "descuentos": 250000
+}

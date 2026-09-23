@@ -1,8 +1,9 @@
-const SUELDO_MINIMO = 400000;
+const SUELDO_MINIMO = 1750905;
 const SUELDO_MAXIMO = 50000000;
 const EDAD_MINIMA = 18;
 const EDAD_MAXIMA = 75;
 const JORNADAS = ["Completa", "Parcial", "Turnos"];
+const PESOS_DIAN = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
 
 export function fechaMaximaNacimiento() {
     const fecha = new Date();
@@ -17,7 +18,16 @@ export function fechaMinimaNacimiento() {
 }
 
 export function normalizarRut(rut) {
-    return (rut || "").replace(/[.\-\s]/g, "").toUpperCase();
+    return (rut || "").replace(/\D/g, "");
+}
+
+function calcularDvDian(numero) {
+    let suma = 0;
+    for (let i = 0; i < numero.length; i += 1) {
+        suma += Number(numero[numero.length - 1 - i]) * PESOS_DIAN[i];
+    }
+    const residuo = suma % 11;
+    return residuo > 1 ? 11 - residuo : residuo;
 }
 
 export function formatearRut(rut) {
@@ -25,16 +35,16 @@ export function formatearRut(rut) {
     if (limpio.length < 2) {
         return rut || "";
     }
-    const cuerpo = limpio.slice(0, -1);
+    const numero = limpio.slice(0, -1);
     const dv = limpio.slice(-1);
     let conPuntos = "";
     let contador = 0;
-    for (let i = cuerpo.length - 1; i >= 0; i -= 1) {
+    for (let i = numero.length - 1; i >= 0; i -= 1) {
         if (contador === 3) {
             conPuntos = `.${conPuntos}`;
             contador = 0;
         }
-        conPuntos = cuerpo[i] + conPuntos;
+        conPuntos = numero[i] + conPuntos;
         contador += 1;
     }
     return `${conPuntos}-${dv}`;
@@ -42,20 +52,15 @@ export function formatearRut(rut) {
 
 export function esRutValido(rut) {
     const limpio = normalizarRut(rut);
-    if (!/^\d{7,8}[0-9K]$/.test(limpio)) {
+    if (limpio.length < 7 || limpio.length > 11) {
         return false;
     }
-    const cuerpo = limpio.slice(0, -1);
-    const dv = limpio.slice(-1);
-    let suma = 0;
-    let multiplicador = 2;
-    for (let i = cuerpo.length - 1; i >= 0; i -= 1) {
-        suma += Number(cuerpo[i]) * multiplicador;
-        multiplicador = multiplicador === 7 ? 2 : multiplicador + 1;
+    const numero = limpio.slice(0, -1);
+    const dv = Number(limpio.slice(-1));
+    if (!/^\d{6,10}$/.test(numero) || Number.isNaN(dv)) {
+        return false;
     }
-    const resto = 11 - (suma % 11);
-    const dvCalculado = resto === 11 ? "0" : resto === 10 ? "K" : String(resto);
-    return dv === dvCalculado;
+    return dv === calcularDvDian(numero);
 }
 
 function edadEnAnios(fechaIso) {
@@ -82,7 +87,9 @@ export function validarCampo(nombre, valor, formulario = {}) {
             return "";
         case "rut":
             if (!texto) return "El RUT es obligatorio";
-            if (!esRutValido(texto)) return "RUT inválido: revisa el número y el dígito verificador";
+            if (!esRutValido(texto)) {
+                return "RUT colombiano inválido: revisa el NIT y el dígito de verificación";
+            }
             return "";
         case "fechaNacimiento":
             if (!texto) return "La fecha de nacimiento es obligatoria";
@@ -98,8 +105,8 @@ export function validarCampo(nombre, valor, formulario = {}) {
             return "";
         case "telefono":
             if (!texto) return "El teléfono es obligatorio";
-            if (!/^(\+?56)?\s?0?9\s?\d{4}\s?\d{4}$/.test(texto)) {
-                return "Usa un celular chileno, por ejemplo +56 9 1234 5678";
+            if (!/^(\+?57)?\s?3\d{2}\s?\d{3}\s?\d{4}$/.test(texto)) {
+                return "Usa un celular colombiano, por ejemplo 300 123 4567";
             }
             return "";
         case "correo":
@@ -121,7 +128,7 @@ export function validarCampo(nombre, valor, formulario = {}) {
             {
                 const sueldo = Number(texto);
                 if (!Number.isInteger(sueldo)) return "El sueldo debe ser un monto entero";
-                if (sueldo < SUELDO_MINIMO) return "El sueldo bruto mínimo es $400.000";
+                if (sueldo < SUELDO_MINIMO) return "El sueldo bruto mínimo es $1.750.905 (SMMLV 2026)";
                 if (sueldo > SUELDO_MAXIMO) return "El sueldo bruto supera el máximo permitido";
             }
             return "";

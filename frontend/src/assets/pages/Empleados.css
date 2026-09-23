@@ -118,23 +118,30 @@
 }
 
 .empleados-tabla {
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   border-collapse: collapse;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .empleados-tabla th,
 .empleados-tabla td {
   text-align: left;
-  padding: 10px 8px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border);
-  vertical-align: top;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
-.empleados-tabla .detalle {
-  font-size: 13px;
-  color: var(--text);
-  margin-top: 2px;
+.empleados-tabla th {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.empleados-tabla td.celda-larga {
+  white-space: normal;
+  min-width: 140px;
+  max-width: 220px;
 }
 
 .empleados-fila-acciones {

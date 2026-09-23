@@ -16,10 +16,10 @@ public final class ValidadorEmpleado {
     public static final int EDAD_MAXIMA = 75;
 
     public static final BigDecimal SUELDO_MINIMO =
-            new BigDecimal("2000000");
+            new BigDecimal("1750905");
 
     public static final BigDecimal SUELDO_MAXIMO =
-            new BigDecimal("20000000");
+            new BigDecimal("50000000");
 
     private static final Set<String> JORNADAS =
             Set.of("Completa", "Parcial", "Turnos");
@@ -77,14 +77,14 @@ public final class ValidadorEmpleado {
                 empleado.getRut().isBlank()) {
 
             throw new IllegalArgumentException(
-                    "El número de documento es obligatorio"
+                    "El RUT es obligatorio"
             );
         }
 
         if (!Rut.esValido(empleado.getRut())) {
 
             throw new IllegalArgumentException(
-                    "El número de documento no es válido. Debe contener entre 6 y 10 dígitos"
+                    "El RUT colombiano no es válido. Revisa el NIT y el dígito de verificación"
             );
         }
 
@@ -264,7 +264,7 @@ public final class ValidadorEmpleado {
                 .compareTo(SUELDO_MINIMO) < 0) {
 
             throw new IllegalArgumentException(
-                    "El sueldo bruto mínimo es $400.000"
+                    "El sueldo bruto mínimo es $1.750.905 (SMMLV 2026)"
             );
         }
 
@@ -348,7 +348,7 @@ public final class ValidadorEmpleado {
                 rutConfirmado.isBlank()) {
 
             throw new IllegalArgumentException(
-                    "Para eliminar debes confirmar el número de documento del empleado"
+                    "Para eliminar debes confirmar el RUT del empleado"
             );
         }
 
@@ -356,7 +356,7 @@ public final class ValidadorEmpleado {
                 .equals(Rut.normalizar(rutConfirmado))) {
 
             throw new IllegalArgumentException(
-                    "El número de documento de confirmación no coincide con el del empleado"
+                    "El RUT de confirmación no coincide con el del empleado"
             );
         }
     }
@@ -396,9 +396,17 @@ public final class ValidadorEmpleado {
             digitos = digitos.substring(2);
         }
 
+        if (digitos.length() != 10 || !digitos.startsWith("3")) {
+            throw new IllegalArgumentException(
+                    "El teléfono debe ser un celular colombiano de 10 dígitos, por ejemplo 300 123 4567"
+            );
+        }
+
         return "+57 " +
                 digitos.substring(0, 3) +
                 " " +
-                digitos.substring(3);
+                digitos.substring(3, 6) +
+                " " +
+                digitos.substring(6);
     }
 }

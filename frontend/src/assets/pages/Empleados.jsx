@@ -31,9 +31,9 @@ function formatearMoneda(valor) {
     if (valor === null || valor === undefined || valor === "") {
         return "—";
     }
-    return Number(valor).toLocaleString("es-CL", {
+    return Number(valor).toLocaleString("es-CO", {
         style: "currency",
-        currency: "CLP",
+        currency: "COP",
         maximumFractionDigits: 0,
     });
 }
@@ -247,11 +247,11 @@ function Empleados() {
                                 autoComplete="name"
                             />
                         </Campo>
-                        <Campo label="RUT *" error={errores.rut}>
+                        <Campo label="RUT (NIT) *" error={errores.rut}>
                             <input
                                 name="rut"
                                 type="text"
-                                placeholder="12.345.678-5"
+                                placeholder="800.197.268-4"
                                 value={formulario.rut}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -271,7 +271,7 @@ function Empleados() {
                             <input
                                 name="direccion"
                                 type="text"
-                                placeholder="Calle, número, comuna"
+                                placeholder="Calle, número, barrio, ciudad"
                                 value={formulario.direccion}
                                 onChange={handleChange}
                             />
@@ -280,7 +280,7 @@ function Empleados() {
                             <input
                                 name="telefono"
                                 type="tel"
-                                placeholder="+56 9 1234 5678"
+                                placeholder="300 123 4567"
                                 value={formulario.telefono}
                                 onChange={handleChange}
                             />
@@ -289,7 +289,7 @@ function Empleados() {
                             <input
                                 name="correo"
                                 type="email"
-                                placeholder="nombre@correo.cl"
+                                placeholder="nombre@correo.com"
                                 value={formulario.correo}
                                 onChange={handleChange}
                             />
@@ -318,7 +318,7 @@ function Empleados() {
                             <input
                                 name="sueldoBruto"
                                 type="number"
-                                min="400000"
+                                min="1750905"
                                 max="50000000"
                                 step="1"
                                 value={formulario.sueldoBruto}
@@ -368,37 +368,30 @@ function Empleados() {
                                 <tr>
                                     <th>Nombre</th>
                                     <th>RUT</th>
+                                    <th>Fecha de nacimiento</th>
+                                    <th>Dirección</th>
+                                    <th>Teléfono</th>
+                                    <th>Correo</th>
                                     <th>Cargo</th>
                                     <th>Jornada</th>
                                     <th>Sueldo bruto</th>
                                     <th>Descuentos</th>
-                                    <th>Contacto</th>
-                                    <th></th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {empleados.map((empleado) => (
                                     <tr key={empleado.id}>
-                                        <td>
-                                            <strong>{empleado.nombre}</strong>
-                                            {empleado.fechaNacimiento ? (
-                                                <div className="detalle">{empleado.fechaNacimiento}</div>
-                                            ) : null}
-                                            {empleado.direccion ? (
-                                                <div className="detalle">{empleado.direccion}</div>
-                                            ) : null}
-                                        </td>
-                                        <td>{empleado.rut}</td>
+                                        <td>{empleado.nombre || "—"}</td>
+                                        <td>{empleado.rut || "—"}</td>
+                                        <td>{empleado.fechaNacimiento || "—"}</td>
+                                        <td className="celda-larga">{empleado.direccion || "—"}</td>
+                                        <td>{empleado.telefono || "—"}</td>
+                                        <td className="celda-larga">{empleado.correo || "—"}</td>
                                         <td>{empleado.cargo || "—"}</td>
                                         <td>{empleado.jornada || "—"}</td>
                                         <td>{formatearMoneda(empleado.sueldoBruto)}</td>
                                         <td>{formatearMoneda(empleado.descuentos)}</td>
-                                        <td>
-                                            {empleado.telefono || "—"}
-                                            {empleado.correo ? (
-                                                <div className="detalle">{empleado.correo}</div>
-                                            ) : null}
-                                        </td>
                                         <td className="empleados-fila-acciones">
                                             <button type="button" className="secundario" onClick={() => comenzarEdicion(empleado)}>
                                                 Editar

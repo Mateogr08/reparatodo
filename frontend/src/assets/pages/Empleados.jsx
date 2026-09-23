@@ -223,7 +223,7 @@ function Empleados() {
     return (
         <div className="empleados-page">
             <header className="empleados-header">
-                <p className="empleados-marca">Reparatodo</p>
+                <p className="empleados-marca">PersonalPay</p>
                 <h1>Gestión de empleados</h1>
                 <p className="empleados-subtitulo">
                     Registra datos personales y laborales, y mantén actualizada la ficha de cada persona.

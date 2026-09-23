@@ -24,6 +24,7 @@ public class Empleado {
 
     private String telefono;
 
+    @Column(unique = true)
     private String correo;
 
     private String cargo;
@@ -119,7 +120,7 @@ public class Empleado {
         return descuentos;
     }
 
-    public void setdescuentos(BigDecimal descuentos) {
+    public void setDescuentos(BigDecimal descuentos) {
         this.descuentos = descuentos;
     }
 }

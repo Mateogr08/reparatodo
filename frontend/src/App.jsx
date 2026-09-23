@@ -1,9 +1,9 @@
-import Usuarios from "/src/assets/pages/Usuarios.jsx";
+import Empleados from "/src/assets/pages/Empleados.jsx";
 
 function App() {
   return (
       <div>
-        <Usuarios />
+        <Empleados />
       </div>
   );
 }

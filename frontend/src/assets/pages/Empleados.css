@@ -1,0 +1,214 @@
+.empleados-page {
+  text-align: left;
+  padding: 32px 24px 48px;
+  color: var(--text);
+}
+
+.empleados-header {
+  margin-bottom: 24px;
+}
+
+.empleados-marca {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+.empleados-page h1 {
+  font-size: 36px;
+  margin: 0 0 8px;
+}
+
+.empleados-subtitulo {
+  margin: 0;
+  max-width: 52ch;
+}
+
+.empleados-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  background: var(--bg);
+}
+
+.empleados-card h2 {
+  margin-bottom: 16px;
+}
+
+.empleados-error {
+  background: rgba(185, 28, 28, 0.12);
+  color: #b91c1c;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.empleados-form fieldset {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin: 0 0 16px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+}
+
+.empleados-form legend {
+  padding: 0 6px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.empleados-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.empleados-form input,
+.empleados-form select {
+  font: inherit;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  color: var(--text-h);
+}
+
+.empleados-acciones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.empleados-page button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 8px 14px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.empleados-page button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.empleados-page button.secundario {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-h);
+}
+
+.empleados-page button.peligro {
+  background: #b91c1c;
+}
+
+.empleados-vacio {
+  margin: 0;
+}
+
+.empleados-tabla-wrap {
+  overflow-x: auto;
+}
+
+.empleados-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.empleados-tabla th,
+.empleados-tabla td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.empleados-tabla .detalle {
+  font-size: 13px;
+  color: var(--text);
+  margin-top: 2px;
+}
+
+.empleados-fila-acciones {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.empleados-form label.campo-invalido input,
+.empleados-form label.campo-invalido select {
+  border-color: #b91c1c;
+}
+
+.campo-error {
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.empleados-modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 20;
+}
+
+.empleados-modal {
+  width: min(460px, 100%);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.empleados-modal h2 {
+  margin-bottom: 12px;
+}
+
+.empleados-modal p {
+  margin-bottom: 12px;
+}
+
+.empleados-modal-rut {
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.empleados-modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.empleados-modal input {
+  font: inherit;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  color: var(--text-h);
+}
+
+@media (max-width: 1024px) {
+  .empleados-form fieldset {
+    grid-template-columns: 1fr;
+  }
+
+  .empleados-page h1 {
+    font-size: 28px;
+  }
+}

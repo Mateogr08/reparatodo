@@ -3,6 +3,7 @@ package com.proyecto.backend.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "empleados")
@@ -34,6 +35,12 @@ public class Empleado {
     private BigDecimal sueldoBruto;
 
     private BigDecimal descuentos;
+
+    private String banco;
+
+    private String numeroCuenta;
+
+    private LocalDateTime fechaRegistro;
 
 
     public Long getId() {
@@ -122,5 +129,29 @@ public class Empleado {
 
     public void setDescuentos(BigDecimal descuentos) {
         this.descuentos = descuentos;
+    }
+
+    public String getBanco() {
+        return banco;
+    }
+
+    public void setBanco(String banco) {
+        this.banco = banco;
+    }
+
+    public String getNumeroCuenta() {
+        return numeroCuenta;
+    }
+
+    public void setNumeroCuenta(String numeroCuenta) {
+        this.numeroCuenta = numeroCuenta;
+    }
+
+    public LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 }

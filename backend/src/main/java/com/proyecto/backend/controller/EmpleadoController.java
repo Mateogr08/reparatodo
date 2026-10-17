@@ -1,5 +1,6 @@
 package com.proyecto.backend.controller;
 
+import com.proyecto.backend.model.AuditoriaCambio;
 import com.proyecto.backend.model.Empleado;
 import com.proyecto.backend.service.EmpleadoService;
 import org.springframework.http.ResponseEntity;
@@ -48,5 +49,10 @@ public class EmpleadoController {
         return empleadoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/auditoria")
+    public List<AuditoriaCambio> historial(@PathVariable Long id) {
+        return empleadoService.historial(id);
     }
 }

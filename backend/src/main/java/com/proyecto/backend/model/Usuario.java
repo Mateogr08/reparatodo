@@ -1,5 +1,7 @@
 package com.proyecto.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,16 +12,22 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nombre;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
-    public Usuario() {
-    }
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 
-    public Usuario(String nombre, String email) {
-        this.nombre = nombre;
-        this.email = email;
+    @Enumerated(EnumType.STRING)
+    private Rol rol = Rol.USUARIO;
+
+    @JsonIgnore
+    private String token;
+
+    public Usuario() {
     }
 
     public Long getId() {
@@ -44,5 +52,29 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

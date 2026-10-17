@@ -25,6 +25,8 @@ const FORMULARIO_VACIO = {
     jornada: "",
     sueldoBruto: "",
     descuentos: "",
+    banco: "",
+    numeroCuenta: "",
 };
 
 function formatearMoneda(valor) {
@@ -48,7 +50,7 @@ function Campo({ label, error, children }) {
     );
 }
 
-function Empleados() {
+function Empleados({ puedeEditar = true }) {
     const [empleados, setEmpleados] = useState([]);
     const [formulario, setFormulario] = useState(FORMULARIO_VACIO);
     const [errores, setErrores] = useState({});
@@ -116,6 +118,8 @@ function Empleados() {
             jornada: formulario.jornada || null,
             sueldoBruto: formulario.sueldoBruto === "" ? null : Number(formulario.sueldoBruto),
             descuentos: formulario.descuentos === "" ? 0 : Number(formulario.descuentos),
+            banco: formulario.banco.trim() || null,
+            numeroCuenta: formulario.numeroCuenta.trim() || null,
         };
     }
 
@@ -165,6 +169,8 @@ function Empleados() {
             jornada: empleado.jornada || "",
             sueldoBruto: empleado.sueldoBruto ?? "",
             descuentos: empleado.descuentos ?? "",
+            banco: empleado.banco || "",
+            numeroCuenta: empleado.numeroCuenta || "",
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -230,6 +236,7 @@ function Empleados() {
                 </p>
             </header>
 
+            {puedeEditar ? (
             <section className="empleados-card">
                 <h2>{idEditando ? "Editar empleado" : "Registrar empleado"}</h2>
 
@@ -335,6 +342,22 @@ function Empleados() {
                                 onChange={handleChange}
                             />
                         </Campo>
+                        <Campo label="Banco" error={errores.banco}>
+                            <input
+                                name="banco"
+                                type="text"
+                                value={formulario.banco}
+                                onChange={handleChange}
+                            />
+                        </Campo>
+                        <Campo label="Número de cuenta" error={errores.numeroCuenta}>
+                            <input
+                                name="numeroCuenta"
+                                type="text"
+                                value={formulario.numeroCuenta}
+                                onChange={handleChange}
+                            />
+                        </Campo>
                     </fieldset>
 
                     <div className="empleados-acciones">
@@ -353,6 +376,7 @@ function Empleados() {
                     </div>
                 </form>
             </section>
+            ) : null}
 
             <section className="empleados-card">
                 <h2>Empleados registrados</h2>
@@ -376,7 +400,8 @@ function Empleados() {
                                     <th>Jornada</th>
                                     <th>Sueldo bruto</th>
                                     <th>Descuentos</th>
-                                    <th>Acciones</th>
+                                    <th>Registro</th>
+                                    {puedeEditar ? <th>Acciones</th> : null}
                                 </tr>
                             </thead>
                             <tbody>
@@ -392,6 +417,8 @@ function Empleados() {
                                         <td>{empleado.jornada || "—"}</td>
                                         <td>{formatearMoneda(empleado.sueldoBruto)}</td>
                                         <td>{formatearMoneda(empleado.descuentos)}</td>
+                                        <td>{empleado.fechaRegistro ? empleado.fechaRegistro.replace("T", " ").slice(0, 19) : "—"}</td>
+                                        {puedeEditar ? (
                                         <td className="empleados-fila-acciones">
                                             <button type="button" className="secundario" onClick={() => comenzarEdicion(empleado)}>
                                                 Editar
@@ -400,6 +427,7 @@ function Empleados() {
                                                 Eliminar
                                             </button>
                                         </td>
+                                        ) : null}
                                     </tr>
                                 ))}
                             </tbody>

@@ -1,0 +1,79 @@
+{
+  "fechaHora" : "2026-10-17T17:19:03.899072400",
+  "empleados" : [ {
+    "banco" : null,
+    "cargo" : "Catador de Salchipapas",
+    "correo" : "correo@gmail.com",
+    "descuentos" : 100000.00,
+    "direccion" : "Mi casita al lado del vecino",
+    "fechaNacimiento" : "2004-02-08",
+    "fechaRegistro" : null,
+    "id" : 2,
+    "jornada" : "Parcial",
+    "nombre" : "Mateo Garrido",
+    "numeroCuenta" : null,
+    "rut" : "800.197.268-4",
+    "sueldoBruto" : 2000000.00,
+    "telefono" : "+57 321 321 3211"
+  } ],
+  "usuarios" : [ {
+    "email" : "admin@reparatodo.com",
+    "id" : 1,
+    "nombre" : "Administrador",
+    "rol" : "ADMINISTRADOR"
+  } ],
+  "asistencias" : [ {
+    "empleado" : {
+      "banco" : null,
+      "cargo" : "Catador de Salchipapas",
+      "correo" : "correo@gmail.com",
+      "descuentos" : 100000.00,
+      "direccion" : "Mi casita al lado del vecino",
+      "fechaNacimiento" : "2004-02-08",
+      "fechaRegistro" : null,
+      "id" : 2,
+      "jornada" : "Parcial",
+      "nombre" : "Mateo Garrido",
+      "numeroCuenta" : null,
+      "rut" : "800.197.268-4",
+      "sueldoBruto" : 2000000.00,
+      "telefono" : "+57 321 321 3211"
+    },
+    "fecha" : "2026-10-17",
+    "id" : 1,
+    "observacion" : "Prueba",
+    "presente" : true
+  } ],
+  "liquidaciones" : [ {
+    "afp" : 6581.00,
+    "bonificaciones" : 100000.00,
+    "diasTrabajados" : 1,
+    "empleado" : {
+      "banco" : null,
+      "cargo" : "Catador de Salchipapas",
+      "correo" : "correo@gmail.com",
+      "descuentos" : 100000.00,
+      "direccion" : "Mi casita al lado del vecino",
+      "fechaNacimiento" : "2004-02-08",
+      "fechaRegistro" : null,
+      "id" : 2,
+      "jornada" : "Parcial",
+      "nombre" : "Mateo Garrido",
+      "numeroCuenta" : null,
+      "rut" : "800.197.268-4",
+      "sueldoBruto" : 2000000.00,
+      "telefono" : "+57 321 321 3211"
+    },
+    "estado" : "CALCULADA",
+    "fechaCalculo" : "2026-10-17T17:19:03.289754",
+    "id" : 1,
+    "impuestos" : 0.00,
+    "isapre" : 6581.00,
+    "otrosDescuentos" : 3226.00,
+    "periodo" : "2026-10",
+    "sueldoBruto" : 64516.00,
+    "sueldoLiquido" : 148128.00,
+    "totalDescuentos" : 16388.00
+  } ],
+  "pagos" : [ ]
+}

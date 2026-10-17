@@ -1,27 +1,26 @@
-const API_URL = "http://localhost:8080/api/usuarios";
+import { api, apiJson, leerError } from "./http";
 
 export async function obtenerUsuarios() {
-    const respuesta = await fetch(API_URL);
-
-    if (!respuesta.ok) {
-        throw new Error("Error al obtener los usuarios");
-    }
-
-    return await respuesta.json();
+    return apiJson("/usuarios", {}, "Error al obtener los usuarios");
 }
 
 export async function crearUsuario(usuario) {
-    const respuesta = await fetch(API_URL, {
+    return apiJson("/usuarios", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify(usuario),
-    });
+    }, "Error al crear el usuario");
+}
 
+export async function actualizarUsuario(id, usuario) {
+    return apiJson(`/usuarios/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(usuario),
+    }, "Error al actualizar el usuario");
+}
+
+export async function eliminarUsuario(id) {
+    const respuesta = await api(`/usuarios/${id}`, { method: "DELETE" });
     if (!respuesta.ok) {
-        throw new Error("Error al crear el usuario");
+        throw new Error(await leerError(respuesta, "Error al eliminar el usuario"));
     }
-
-    return await respuesta.json();
 }

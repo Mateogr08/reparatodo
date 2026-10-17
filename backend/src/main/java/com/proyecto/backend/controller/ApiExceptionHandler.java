@@ -20,4 +20,9 @@ public class ApiExceptionHandler {
     public ResponseEntity<Map<String, String>> manejarNoEncontrado(NoSuchElementException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
     }
+
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<Map<String, String>> manejarSeguridad(SecurityException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("mensaje", ex.getMessage()));
+    }
 }

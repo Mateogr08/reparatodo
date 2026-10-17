@@ -2,6 +2,7 @@ package com.proyecto.backend.controller;
 
 import com.proyecto.backend.model.Usuario;
 import com.proyecto.backend.service.UsuarioService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,5 +26,16 @@ public class UsuarioController {
     @PostMapping
     public Usuario guardar(@RequestBody Usuario usuario) {
         return usuarioService.guardar(usuario);
+    }
+
+    @PutMapping("/{id}")
+    public Usuario actualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
+        return usuarioService.actualizar(id, usuario);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        usuarioService.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 }

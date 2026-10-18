@@ -60,7 +60,9 @@ function App() {
                         className={vista === modulo.id ? "activo" : ""}
                         onClick={() => setVista(modulo.id)}
                     >
-                        {modulo.etiqueta}
+                        {modulo.id === "empleados" && sesion.rol === "EMPLEADO"
+                            ? "Mi ficha"
+                            : modulo.etiqueta}
                     </button>
                 ))}
                 <span className="app-nav-usuario">{sesion.nombre} · {sesion.rol}</span>

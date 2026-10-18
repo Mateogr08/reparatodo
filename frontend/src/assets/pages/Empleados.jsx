@@ -230,9 +230,11 @@ function Empleados({ puedeEditar = true }) {
         <div className="empleados-page">
             <header className="empleados-header">
                 <p className="empleados-marca">PersonalPay</p>
-                <h1>Gestión de empleados</h1>
+                <h1>{puedeEditar ? "Gestión de empleados" : "Mi ficha"}</h1>
                 <p className="empleados-subtitulo">
-                    Registra datos personales y laborales, y mantén actualizada la ficha de cada persona.
+                    {puedeEditar
+                        ? "Registra datos personales y laborales, y mantén actualizada la ficha de cada persona."
+                        : "Consulta únicamente tu información personal y laboral registrada en el sistema."}
                 </p>
             </header>
 
@@ -379,7 +381,7 @@ function Empleados({ puedeEditar = true }) {
             ) : null}
 
             <section className="empleados-card">
-                <h2>Empleados registrados</h2>
+                <h2>{puedeEditar ? "Empleados registrados" : "Tu información"}</h2>
 
                 {cargaFallida ? (
                     <p className="empleados-vacio">No se pudo conectar con el servidor para listar empleados.</p>

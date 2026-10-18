@@ -5,7 +5,9 @@ import com.proyecto.backend.model.Empleado;
 import com.proyecto.backend.model.Rol;
 import com.proyecto.backend.repository.AuditoriaCambioRepository;
 import com.proyecto.backend.repository.EmpleadoRepository;
+import com.proyecto.backend.model.Usuario;
 import com.proyecto.backend.security.SesionActual;
+import com.proyecto.backend.security.VinculoEmpleado;
 import com.proyecto.backend.validation.ValidadorEmpleado;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,19 +98,30 @@ public class EmpleadoService {
 
     public List<Empleado> listarEmpleados() {
         exigirLectura();
+        Usuario actual = SesionActual.get();
+        if (actual.getRol() == Rol.EMPLEADO) {
+            return VinculoEmpleado.fichaDelUsuarioActual(empleadoRepository)
+                    .map(List::of)
+                    .orElse(List.of());
+        }
+        if (actual.getRol() == Rol.USUARIO) {
+            return List.of();
+        }
         return empleadoRepository.findAll();
     }
 
     public Optional<Empleado> buscarPorId(Long id) {
         exigirLectura();
-        return empleadoRepository.findById(id);
+        Optional<Empleado> empleado = empleadoRepository.findById(id);
+        empleado.ifPresent(VinculoEmpleado::exigirAccesoFicha);
+        return empleado;
     }
 
     public List<AuditoriaCambio> historial(Long empleadoId) {
         exigirLectura();
-        if (!empleadoRepository.existsById(empleadoId)) {
-            throw new NoSuchElementException("Empleado no encontrado");
-        }
+        Empleado empleado = empleadoRepository.findById(empleadoId)
+                .orElseThrow(() -> new NoSuchElementException("Empleado no encontrado"));
+        VinculoEmpleado.exigirAccesoFicha(empleado);
         return auditoriaCambioRepository.findByEmpleadoIdOrderByFechaHoraDesc(empleadoId);
     }
 

@@ -8,6 +8,7 @@ import com.proyecto.backend.repository.AsistenciaRepository;
 import com.proyecto.backend.repository.EmpleadoRepository;
 import com.proyecto.backend.repository.LiquidacionRepository;
 import com.proyecto.backend.security.SesionActual;
+import com.proyecto.backend.security.VinculoEmpleado;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -111,10 +112,8 @@ public class LiquidacionService {
             throw new SecurityException("Debe iniciar sesión");
         }
         if (actual.getRol() == Rol.EMPLEADO) {
-            return empleadoRepository.findAll().stream()
-                    .filter(empleado -> actual.getEmail().equalsIgnoreCase(empleado.getCorreo()))
-                    .flatMap(empleado -> liquidacionRepository.findByEmpleadoIdOrderByPeriodoDesc(empleado.getId()).stream())
-                    .toList();
+            Empleado propio = VinculoEmpleado.exigirFichaVinculada(empleadoRepository);
+            return liquidacionRepository.findByEmpleadoIdOrderByPeriodoDesc(propio.getId());
         }
         SesionActual.exigirRol(Rol.ADMINISTRADOR, Rol.ENCARGADO_PERSONAL);
         return liquidacionRepository.findAll();
@@ -137,18 +136,7 @@ public class LiquidacionService {
     }
 
     private void controlarAcceso(Liquidacion liquidacion) {
-        Usuario actual = SesionActual.get();
-        if (actual == null) {
-            throw new SecurityException("Debe iniciar sesión");
-        }
-        if (actual.getRol() == Rol.ADMINISTRADOR || actual.getRol() == Rol.ENCARGADO_PERSONAL) {
-            return;
-        }
-        if (actual.getRol() == Rol.EMPLEADO
-                && actual.getEmail().equalsIgnoreCase(liquidacion.getEmpleado().getCorreo())) {
-            return;
-        }
-        throw new SecurityException("No tiene permiso para consultar esta liquidación");
+        VinculoEmpleado.exigirAccesoFicha(liquidacion.getEmpleado());
     }
 
     private YearMonth parsearPeriodo(String periodo) {

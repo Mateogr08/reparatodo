@@ -5,7 +5,9 @@ import com.proyecto.backend.model.Empleado;
 import com.proyecto.backend.model.Rol;
 import com.proyecto.backend.repository.AsistenciaRepository;
 import com.proyecto.backend.repository.EmpleadoRepository;
+import com.proyecto.backend.model.Usuario;
 import com.proyecto.backend.security.SesionActual;
+import com.proyecto.backend.security.VinculoEmpleado;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -46,6 +48,21 @@ public class AsistenciaService {
 
     public List<Asistencia> listar(Long empleadoId, LocalDate desde, LocalDate hasta) {
         SesionActual.exigirRol(Rol.ADMINISTRADOR, Rol.ENCARGADO_PERSONAL, Rol.EMPLEADO, Rol.USUARIO);
+        Usuario actual = SesionActual.get();
+        if (actual.getRol() == Rol.EMPLEADO) {
+            Long propioId = VinculoEmpleado.exigirFichaVinculada(empleadoRepository).getId();
+            if (empleadoId != null && !empleadoId.equals(propioId)) {
+                throw new SecurityException("No tiene permiso para consultar la asistencia de otro empleado");
+            }
+            empleadoId = propioId;
+            if (desde != null && hasta != null) {
+                return asistenciaRepository.findByEmpleadoIdAndFechaBetween(empleadoId, desde, hasta);
+            }
+            return asistenciaRepository.findByEmpleadoIdOrderByFechaDesc(empleadoId);
+        }
+        if (actual.getRol() == Rol.USUARIO) {
+            return List.of();
+        }
         if (empleadoId != null && desde != null && hasta != null) {
             return asistenciaRepository.findByEmpleadoIdAndFechaBetween(empleadoId, desde, hasta);
         }

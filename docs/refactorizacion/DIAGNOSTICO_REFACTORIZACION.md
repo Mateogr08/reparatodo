@@ -149,7 +149,7 @@
 
 | Commit | Mensaje sugerido | Hash |
 |--------|-----------------|------|
-| 1 | `docs: registrar diagnostico tecnico` | [pegar hash] |
-| 2 | `refactor: extraer calculo de liquidacion a dominio` | [pegar hash] |
-| 3 | `docs: documentar verificacion de refactorizacion` | [pegar hash] |
+| 1 | `docs: registrar diagnostico tecnico` | `fec4720` |
+| 2 | `refactor: extraer calculo de liquidacion a dominio` | `67daa5c` |
+| 3 | `docs: documentar verificacion de refactorizacion` | *(este commit)* |
 

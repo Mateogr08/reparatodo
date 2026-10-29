@@ -151,5 +151,5 @@
 |--------|-----------------|------|
 | 1 | `docs: registrar diagnostico tecnico` | `fec4720` |
 | 2 | `refactor: extraer calculo de liquidacion a dominio` | `67daa5c` |
-| 3 | `docs: documentar verificacion de refactorizacion` | *(este commit)* |
+| 3 | `docs: documentar verificacion de refactorizacion` | `6b5689f` |
 

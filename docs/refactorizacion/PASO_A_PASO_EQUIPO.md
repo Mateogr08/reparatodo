@@ -41,19 +41,3 @@ Completa hashes en sección 8 del diagnóstico, luego:
 git add docs/refactorizacion/DIAGNOSTICO_REFACTORIZACION.md
 git commit -m "docs: documentar verificacion de refactorizacion"
 ```
-
-## Parte D — Entregar al profesor
-
-- Enlace al repositorio.
-- Ruta: `docs/refactorizacion/DIAGNOSTICO_REFACTORIZACION.md`.
-- Los 3 commits (o hashes).
-- En la sustentación: funcionalidad elegida, un hallazgo, qué refactor hicieron, cómo verificaron.
-
-## Parte E — Sustentación (2 min por persona)
-
-Guion:
-
-1. "Auditamos **calcular liquidación** (F-03/F-04)."
-2. "Encontramos que el **servicio mezclaba** cálculo y persistencia (H-02)."
-3. "Separamos **`CalculadoraLiquidacion`** y agregamos **test unitario**."
-4. "Comportamiento igual: `mvn test` + prueba manual en Liquidaciones."

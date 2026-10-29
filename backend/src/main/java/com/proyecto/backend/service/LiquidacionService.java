@@ -1,5 +1,6 @@
 package com.proyecto.backend.service;
 
+import com.proyecto.backend.domain.CalculadoraLiquidacion;
 import com.proyecto.backend.model.Empleado;
 import com.proyecto.backend.model.Liquidacion;
 import com.proyecto.backend.model.Rol;
@@ -12,7 +13,6 @@ import com.proyecto.backend.security.VinculoEmpleado;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -21,11 +21,6 @@ import java.util.NoSuchElementException;
 
 @Service
 public class LiquidacionService {
-
-    private static final BigDecimal TASA_AFP = new BigDecimal("0.04");
-    private static final BigDecimal TASA_ISAPRE = new BigDecimal("0.04");
-    private static final BigDecimal TASA_IMPUESTO = new BigDecimal("0.05");
-    private static final BigDecimal TOPE_EXENTO = new BigDecimal("7003620");
 
     private final LiquidacionRepository liquidacionRepository;
     private final EmpleadoRepository empleadoRepository;
@@ -60,26 +55,15 @@ public class LiquidacionService {
             throw new IllegalArgumentException("No hay asistencia registrada en el periodo " + periodo);
         }
 
-        BigDecimal sueldoContrato = nvl(empleado.getSueldoBruto());
-        BigDecimal sueldoProporcional = sueldoContrato
-                .multiply(BigDecimal.valueOf(diasTrabajados))
-                .divide(BigDecimal.valueOf(diasMes), 0, RoundingMode.HALF_UP);
-        BigDecimal bonos = nvl(bonificaciones);
-        BigDecimal base = sueldoProporcional.add(bonos);
-        BigDecimal afp = porcentaje(base, TASA_AFP);
-        BigDecimal isapre = porcentaje(base, TASA_ISAPRE);
-        BigDecimal impuestos = BigDecimal.ZERO;
-        if (base.compareTo(TOPE_EXENTO) > 0) {
-            impuestos = porcentaje(base.subtract(TOPE_EXENTO), TASA_IMPUESTO);
-        }
-        BigDecimal otros = nvl(empleado.getDescuentos())
-                .multiply(BigDecimal.valueOf(diasTrabajados))
-                .divide(BigDecimal.valueOf(diasMes), 0, RoundingMode.HALF_UP);
-        BigDecimal totalDescuentos = afp.add(isapre).add(impuestos).add(otros);
-        BigDecimal liquido = base.subtract(totalDescuentos);
-        if (liquido.compareTo(BigDecimal.ZERO) < 0) {
-            liquido = BigDecimal.ZERO;
-        }
+        CalculadoraLiquidacion.Resultado montos = CalculadoraLiquidacion.calcular(
+                new CalculadoraLiquidacion.Entrada(
+                        empleado.getSueldoBruto(),
+                        diasTrabajados,
+                        diasMes,
+                        bonificaciones,
+                        empleado.getDescuentos()
+                )
+        );
 
         Liquidacion liquidacion = liquidacionRepository.findByEmpleadoIdAndPeriodo(empleadoId, periodo)
                 .orElseGet(Liquidacion::new);
@@ -90,14 +74,14 @@ public class LiquidacionService {
         liquidacion.setEmpleado(empleado);
         liquidacion.setPeriodo(periodo);
         liquidacion.setDiasTrabajados(diasTrabajados);
-        liquidacion.setSueldoBruto(sueldoProporcional);
-        liquidacion.setBonificaciones(bonos);
-        liquidacion.setAfp(afp);
-        liquidacion.setIsapre(isapre);
-        liquidacion.setImpuestos(impuestos);
-        liquidacion.setOtrosDescuentos(otros);
-        liquidacion.setTotalDescuentos(totalDescuentos);
-        liquidacion.setSueldoLiquido(liquido);
+        liquidacion.setSueldoBruto(montos.sueldoProporcional());
+        liquidacion.setBonificaciones(montos.bonificaciones());
+        liquidacion.setAfp(montos.afp());
+        liquidacion.setIsapre(montos.isapre());
+        liquidacion.setImpuestos(montos.impuestos());
+        liquidacion.setOtrosDescuentos(montos.otrosDescuentos());
+        liquidacion.setTotalDescuentos(montos.totalDescuentos());
+        liquidacion.setSueldoLiquido(montos.sueldoLiquido());
         liquidacion.setFechaCalculo(LocalDateTime.now());
         liquidacion.setEstado("CALCULADA");
         liquidacion.setDocumentoPdf(null);
@@ -146,11 +130,4 @@ public class LiquidacionService {
         return YearMonth.parse(periodo);
     }
 
-    private BigDecimal nvl(BigDecimal valor) {
-        return valor == null ? BigDecimal.ZERO : valor;
-    }
-
-    private BigDecimal porcentaje(BigDecimal base, BigDecimal tasa) {
-        return base.multiply(tasa).setScale(0, RoundingMode.HALF_UP);
-    }
 }
